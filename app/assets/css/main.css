@@ -1,0 +1,107 @@
+/* 1. GLOBAL DEĞİŞKENLER */
+:root {
+  /* Renkler */
+  --bg-dark: #0d0e13;
+  --bg-light: #e4e0db; /* Light mode zemin */
+  --text-light: #e4e0db; /* Dark mode üzerindeki açık yazı */
+  --text-dark: #0d0e13; /* Light mode üzerindeki koyu yazı */
+
+  /* Layout Spacing */
+  --page-margin: clamp(1.25rem, calc(1.9vw + 0.8rem), 3.75rem);
+  --grid-gutter: clamp(0.75rem, calc(0.75vw + 0.56rem), 2rem);
+  --section-gap: clamp(3.75rem, calc(5.5vw + 2.4rem), 10rem);
+
+  /* Typography Scale (REVİZE EDİLDİ) */
+
+  /* Display / Hero (Max 6rem) */
+  --text-display: clamp(2.75rem, 1.5rem + 3.5vw, 6rem);
+
+  /* H1 (Max 4.5rem) */
+  --text-h1: clamp(2.25rem, 1rem + 2.5vw, 4.5rem);
+
+  /* H2 (Max 3.75rem) */
+  --text-h2: clamp(1.75rem, 0.8rem + 2vw, 3.75rem);
+
+  /* H3 (Max 3rem) */
+  --text-h3: clamp(1.5rem, 0.8rem + 1.5vw, 3rem);
+
+  /* H4 (Max 2rem - Logo ve Vurgu) */
+  --text-h4: clamp(1.25rem, 1rem + 0.8vw, 2rem);
+
+  /* H5 (Ara boyut) */
+  --text-h5: clamp(1.125rem, 1rem + 0.6vw, 1.625rem);
+
+  /* H6 (En küçük başlık) */
+  --text-h6: clamp(1rem, 0.95rem + 0.4vw, 1.375rem);
+
+  /* Body (Hafif büyütüldü: Max 1.25rem) */
+  --text-body: clamp(1rem, 0.9rem + 0.25vw, 1.25rem);
+
+  /* Small (Dipnotlar) */
+  --text-small: clamp(0.8125rem, 0.75rem + 0.15vw, 0.9375rem);
+
+  /* Quote */
+  --text-quote: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "TWK Lausanne";
+    src: url("../fonts/TWKLausanne-Regular.woff2") format("woff2");
+    font-weight: 400; /* Regular standart */
+    font-style: normal;
+    font-display: block;
+  }
+
+  @font-face {
+    font-family: "TWK Lausanne";
+    src: url("../fonts/TWKLausanne-Light.woff2") format("woff2");
+    font-weight: 300; /* Light standart */
+    font-style: normal;
+    font-display: block;
+  }
+
+  html {
+    scrollbar-gutter: stable;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #0d0e13;
+    background-color: var(--bg-dark);
+  }
+
+  body {
+    background-color: #0d0e13;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: "TWK Lausanne", sans-serif;
+    font-size: var(--text-body);
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+    min-height: 100vh;
+  }
+}
+
+/* Lenis Scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
