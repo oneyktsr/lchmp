@@ -16,19 +16,27 @@ export default defineNuxtConfig({
     },
   },
 
+  // 3. PERFORMANS & CACHE AYARLARI (YENİ EKLENDİ)
+  // TTFB süresini düşürmek için Vercel ISR (Incremental Static Regeneration) ayarı.
+  routeRules: {
+    // Ana sayfa ve tüm alt sayfalar 1 saat (3600sn) boyunca cache'ten sunulur.
+    // Arka planda veri değişirse Vercel onu sessizce günceller (SWR).
+    "/**": { isr: 3600 },
+  },
+
   modules: [
     "@nuxtjs/seo",
     "@nuxt/image",
     "@nuxt/fonts",
     "@nuxt/scripts",
     "@nuxt/content",
-    // "nuxt-security", // SAFARI İÇİN GEÇİCİ KAPALI (Sorun kaynağı olabilir)
+    // "nuxt-security", // SAFARI İÇİN GEÇİCİ KAPALI
     "@nuxt/icon",
     "@vueuse/nuxt",
     "@pinia/nuxt",
   ],
 
-  // 3. Vite Dosya İzinleri
+  // 4. Vite Dosya İzinleri
   vite: {
     server: {
       fs: {
