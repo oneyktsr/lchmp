@@ -13,15 +13,31 @@ const logoRef = ref(null);
 const { isIntroDone } = useLoader();
 
 onMounted(() => {
-  // --- SCROLL RESET (YENİ EKLENEN KISIM) ---
-  // Tarayıcının sayfayı aşağıdan başlatmasını engelle
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
   window.scrollTo(0, 0);
-  // ----------------------------------------
 
-  // ... (Geri kalan kodlar aynen devam eder)
+  // --- GÜÇLENDİRİLMİŞ SCROLL KİLİDİ ---
+  // Sadece body yetmez, html elementini de kilitlemeliyiz.
+  const lockScroll = () => {
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.height = "100%"; // Ekstra güvenlik
+    document.body.style.height = "100%";
+  };
+
+  const unlockScroll = () => {
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+    document.documentElement.style.height = "";
+    document.body.style.height = "";
+  };
+
+  // Kilidi hemen uygula
+  lockScroll();
+  // ------------------------------------
+
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
   const split = new SplitText(logoRef.value, { type: "chars" });
 
@@ -30,6 +46,7 @@ onMounted(() => {
   const rect = logoRef.value.getBoundingClientRect();
   const screenCenterY = window.innerHeight / 2;
   const computedStyle = window.getComputedStyle(logoRef.value);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const paddingTop = parseFloat(computedStyle.paddingTop);
   const elementCenterY = rect.top + rect.height / 2;
   const startY = screenCenterY - elementCenterY;
@@ -66,6 +83,10 @@ onMounted(() => {
       onComplete: () => {
         gsap.set(curtainRef.value, { display: "none" });
         isIntroDone.value = true;
+
+        // --- KİLİDİ AÇ ---
+        unlockScroll();
+        // -----------------
       },
     });
 
@@ -79,7 +100,6 @@ onMounted(() => {
         },
         "reveal",
       )
-
       .to(
         logoRef.value,
         {
@@ -97,7 +117,7 @@ onMounted(() => {
 <template>
   <div
     ref="curtainRef"
-    class="fixed inset-0 z-[10000] bg-theme-dark w-full h-[100dvh]pointer-events-none"
+    class="fixed inset-0 z-[10000] bg-theme-dark w-full h-[100dvh] pointer-events-none"
   ></div>
 
   <h1
