@@ -1,16 +1,56 @@
 <script setup lang="ts">
-// Showreel scriptleri (Video player logic vs.) buraya gelecek.
+import { onMounted, ref } from "vue";
+import gsap from "~/lib/gsap/index.js";
+import { ScrollTrigger } from "~/lib/gsap/ScrollTrigger.js";
+
+if (process.client) {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const sectionRef = ref(null);
+const videoRef = ref(null);
+
+onMounted(() => {
+  if (!sectionRef.value || !videoRef.value) return;
+
+  // GÜÇLENDİRİLMİŞ PARALLAX
+  // Hareket aralığını -15'ten -30'a çıkardık.
+  // Video kapsayıcıdan çok daha hızlı hareket edecek.
+  gsap.fromTo(
+    videoRef.value,
+    {
+      yPercent: -30, // Başlangıç (Yukarıda)
+    },
+    {
+      yPercent: 30, // Bitiş (Aşağıda)
+      ease: "none",
+      scrollTrigger: {
+        trigger: sectionRef.value,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+    },
+  );
+});
 </script>
 
 <template>
   <section
+    ref="sectionRef"
     class="w-full h-[100dvh] relative bg-black overflow-hidden flex items-center justify-center"
   >
-    <img
-      src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2525&auto=format&fit=crop"
-      alt="Showreel Cover"
-      class="absolute inset-0 w-full h-full object-cover opacity-70"
-    />
+    <div class="absolute inset-0 w-full h-full overflow-hidden">
+      <video
+        ref="videoRef"
+        src="/showreel.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+        class="absolute w-full h-[150%] -top-[25%] object-cover opacity-70"
+      ></video>
+    </div>
 
     <div class="relative z-10 text-center">
       <h2
@@ -19,7 +59,7 @@
         Showreel
       </h2>
       <div
-        class="mt-4 text-white text-small uppercase tracking-widest border border-white/30 px-6 py-3 rounded-full inline-block backdrop-blur-sm"
+        class="mt-4 text-white text-small uppercase tracking-widest border border-white/30 px-6 py-3 rounded-full inline-block backdrop-blur-sm cursor-pointer hover:bg-white/10 transition-colors"
       >
         Play Video
       </div>

@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue"; // onUnmounted eklendi
 import gsap from "~/lib/gsap/index.js";
+import { ScrollTrigger } from "~/lib/gsap/ScrollTrigger.js";
 import { useLoader } from "~/composables/useLoader";
 
+if (process.client) {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 const buttonRef = ref(null);
+const heroTitleRef = ref(null);
+const sectionRef = ref(null);
+
 const { isIntroDone } = useLoader();
+
+// MatchMedia değişkenini dışarıda tanımlıyoruz ki temizleyebilelim
+let mm: gsap.MatchMedia;
 
 const playButtonAnimation = () => {
   if (!buttonRef.value) return;
@@ -22,10 +33,44 @@ const playButtonAnimation = () => {
 };
 
 onMounted(() => {
+  // 1. Buton Başlangıç
   gsap.set(buttonRef.value, { autoAlpha: 0 });
   if (isIntroDone.value) {
     playButtonAnimation();
   }
+
+  // 2. RESPONSIVE PARALLAX (LAG EFFECT)
+  if (heroTitleRef.value && sectionRef.value) {
+    mm = gsap.matchMedia();
+
+    // Breakpointleri tanımla (Tailwind 'md' = 768px)
+    mm.add(
+      {
+        isMobile: "(max-width: 767px)",
+        isDesktop: "(min-width: 768px)",
+      },
+      (context) => {
+        const { isMobile } = context.conditions as { isMobile: boolean };
+
+        gsap.to(heroTitleRef.value, {
+          // İSTEĞİN: Mobilse 150, Değilse 100
+          yPercent: isMobile ? 150 : 100,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.value,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      },
+    );
+  }
+});
+
+// Temizlik: Sayfa değişince event listener'ları sil
+onUnmounted(() => {
+  if (mm) mm.revert();
 });
 
 watch(isIntroDone, (newVal) => {
@@ -37,9 +82,10 @@ watch(isIntroDone, (newVal) => {
 
 <template>
   <section
+    ref="sectionRef"
     class="w-full min-h-[80dvh] flex flex-col justify-between px-page-margin pb-[calc(var(--page-margin)*2)] md:pb-page-margin"
   >
-    <div class="w-full max-w-5xl hero-title-wrapper">
+    <div ref="heroTitleRef" class="w-full max-w-5xl hero-title-wrapper">
       <RevealText
         tag="h1"
         class="text-display font-normal leading-[1.1] tracking-tighter text-theme-dark"
@@ -79,14 +125,15 @@ watch(isIntroDone, (newVal) => {
 
 <style scoped>
 .hero-title-wrapper {
-  /* Mobil: x2 Boşluk */
+  /* Mobil: x2.5 */
   padding-top: calc((var(--page-margin) * 2.5) + var(--text-h4) - 0.7em);
   margin-left: -0.08em;
+  will-change: transform;
 }
 
 @media (min-width: 768px) {
   .hero-title-wrapper {
-    /* Tablet ve Desktop: Normal x1 Boşluk */
+    /* Desktop: x2 */
     padding-top: calc((var(--page-margin) * 2) + var(--text-h4) - 0.7em);
   }
 }
