@@ -2,32 +2,30 @@
 import { ref, onMounted } from "vue";
 import gsap from "~/lib/gsap/index.js";
 import { ScrollTrigger } from "~/lib/gsap/ScrollTrigger.js";
-// RevealText içinde ScrollTrigger ve SplitText zaten yönetiliyor.
 
 if (process.client) {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 const sectionRef = ref(null);
-const buttonRef = ref(null); // Buton için referans
+const buttonRef = ref(null);
 
 onMounted(() => {
-  // Buton Animasyonu (ScrollTrigger ile ekrana girince çalışır)
   if (buttonRef.value) {
     gsap.fromTo(
       buttonRef.value,
-      { autoAlpha: 0, y: 20 }, // Başlangıç: Görünmez ve biraz aşağıda
+      { autoAlpha: 0, y: 20 },
       {
         autoAlpha: 1,
         y: 0,
         duration: 1,
         ease: "power3.out",
-        delay: 0.4, // Metinden hemen sonra gelmesi için gecikme
+        delay: 0.4,
         scrollTrigger: {
           trigger: buttonRef.value,
-          start: "top 95%", // Ekranın altına yaklaşınca başla
+          start: "top 95%",
           toggleActions: "play none none none",
-          once: true, // Sadece 1 kere oynat
+          once: true,
         },
       },
     );
@@ -81,19 +79,24 @@ onMounted(() => {
       class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-12 lg:mt-24"
     >
       <div
-        class="col-span-4 mb-2 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
+        class="col-span-4 min-[450px]:col-span-1 mb-2 min-[450px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
       >
-        <RevealText tag="span" class="text-body text-theme-light font-normal">
-          / What Drives Us
+        <RevealText
+          tag="span"
+          class="text-body text-theme-light font-normal leading-[1.1]"
+        >
+          <span class="hidden md:inline">/ </span>What
+          <br class="hidden min-[450px]:block md:hidden" />
+          Drives Us
         </RevealText>
       </div>
 
       <div
-        class="col-span-4 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
+        class="col-span-4 min-[450px]:col-span-3 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
       >
         <RevealText
           tag="p"
-          class="text-body font-normal leading-tight"
+          class="text-body font-light leading-tight"
           :delay="0.1"
           :duration="1"
         >
@@ -109,19 +112,24 @@ onMounted(() => {
       class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-8 lg:mt-8"
     >
       <div
-        class="col-span-4 mb-2 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
+        class="col-span-4 min-[450px]:col-span-1 mb-2 min-[450px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
       >
-        <RevealText tag="span" class="text-body text-theme-light font-normal">
-          / Our Approach
+        <RevealText
+          tag="span"
+          class="text-body text-theme-light font-normal leading-[1.1]"
+        >
+          <span class="hidden md:inline">/ </span>Our
+          <br class="hidden min-[450px]:block md:hidden" />
+          Approach
         </RevealText>
       </div>
 
       <div
-        class="col-span-4 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
+        class="col-span-4 min-[450px]:col-span-3 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
       >
         <RevealText
           tag="p"
-          class="text-body font-normal leading-tight"
+          class="text-body font-light leading-tight"
           :delay="0.1"
           :duration="1"
         >

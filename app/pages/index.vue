@@ -10,5 +10,6 @@
 
     <HomeShowreel />
     <HomeApproach />
+    <HomeTrustedBy />
   </div>
 </template>
