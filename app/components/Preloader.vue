@@ -97,7 +97,7 @@ onMounted(() => {
 <template>
   <div
     ref="curtainRef"
-    class="fixed inset-0 z-[10000] bg-theme-dark w-full h-full pointer-events-none"
+    class="fixed inset-0 z-[10000] bg-theme-dark w-full h-[100dvh]pointer-events-none"
   ></div>
 
   <h1
