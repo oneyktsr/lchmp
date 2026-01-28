@@ -9,5 +9,6 @@
     <HomeHero />
 
     <HomeShowreel />
+    <HomeApproach />
   </div>
 </template>
