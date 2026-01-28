@@ -7,7 +7,8 @@ import { useLoader } from "~/composables/useLoader";
 
 const props = defineProps({
   tag: { type: String, default: "div" },
-  duration: { type: Number, default: 1.0 },
+  // REVIZE 1: Varsayılan süre 1.0'dan 0.8'e çekildi (Daha hızlı)
+  duration: { type: Number, default: 0 },
   stagger: { type: Number, default: 0.1 },
   delay: { type: Number, default: 0 },
 });
@@ -48,10 +49,10 @@ const initAnimation = async () => {
     // 2. BAŞLANGIÇ DURUMU
     gsap.set(splitInstance.lines, {
       yPercent: 100,
-      rotation: 2, // <--- YENİ: Hafif rotasyon eklendi (İsteğin üzerine 2 derece)
+      rotation: 1, // <--- REVIZE 2: Rotasyon 2'den 1'e düşürüldü (Daha hafif eğim)
       opacity: 1,
       force3D: true,
-      transformOrigin: "0% 50%", // Sol taraftan pivot alarak dönmesi daha doğal durur
+      transformOrigin: "0% 50%",
     });
 
     // Wrapper'ı görünür yap
@@ -60,7 +61,7 @@ const initAnimation = async () => {
     // 3. ANIMASYON
     gsap.to(splitInstance.lines, {
       yPercent: 0,
-      rotation: 0, // <--- YENİ: Rotasyon sıfırlanır (Düz hale gelir)
+      rotation: 0,
       duration: props.duration,
       stagger: props.stagger,
       delay: props.delay,
