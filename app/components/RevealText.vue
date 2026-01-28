@@ -7,8 +7,8 @@ import { useLoader } from "~/composables/useLoader";
 
 const props = defineProps({
   tag: { type: String, default: "div" },
-  // REVIZE 1: Varsayılan süre 1.0'dan 0.8'e çekildi (Daha hızlı)
-  duration: { type: Number, default: 0.1 },
+  // REVIZE: Süre 0.8sn (Hızlı ve akıcı)
+  duration: { type: Number, default: 0.8 },
   stagger: { type: Number, default: 0.1 },
   delay: { type: Number, default: 0 },
 });
@@ -26,11 +26,8 @@ let ctx: gsap.Context | null = null;
 const initAnimation = async () => {
   if (!textRef.value) return;
 
-  // DOM ve Fontların hazır olmasını bekle
+  // Sadece DOM güncellemesini bekle (Font yüklenmesini BEKLEME)
   await nextTick();
-  try {
-    await document.fonts.ready;
-  } catch (e) {}
 
   // Temizlik
   if (ctx) ctx.revert();
@@ -49,7 +46,7 @@ const initAnimation = async () => {
     // 2. BAŞLANGIÇ DURUMU
     gsap.set(splitInstance.lines, {
       yPercent: 100,
-      rotation: 1, // <--- REVIZE 2: Rotasyon 2'den 1'e düşürüldü (Daha hafif eğim)
+      rotation: 1, // REVIZE: 1 derecelik çok hafif eğim
       opacity: 1,
       force3D: true,
       transformOrigin: "0% 50%",
