@@ -57,7 +57,7 @@ onMounted(() => {
 
   // Logoyu büyüt
   gsap.set(logoRef.value, {
-    scale: 2,
+    scale: 1.7,
     transformOrigin: "left center",
     force3D: false,
   });
