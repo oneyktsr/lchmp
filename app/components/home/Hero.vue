@@ -95,7 +95,7 @@ watch(isIntroDone, (newVal) => {
         ref="buttonRef"
         class="col-span-4 md:col-span-3 xl:col-span-3 order-2 md:order-1 mt-8 md:mt-0 flex items-end pb-1 opacity-0"
       >
-        <UiButton to="/about" label="Learn More About Us" mode="dark" />
+        <UiButton to="/studio" label="Learn More About Us" mode="dark" />
       </div>
 
       <div
