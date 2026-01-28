@@ -9,10 +9,27 @@ export default defineNuxtConfig({
   // 2. CSS Dosyası
   css: ["~/assets/css/main.css"],
 
-  // 3. KRİTİK GÖRSEL İYİLEŞTİRME (DÜZELTİLDİ)
-  // 'type' satırı silindi, sadece 'innerHTML' yeterlidir.
+  // 3. KRİTİK GÖRSEL İYİLEŞTİRME & FONT PRELOAD
   app: {
     head: {
+      // (A) Fontları Önceden Yükle (CLS ve FCP'yi düzeltir)
+      link: [
+        {
+          rel: "preload",
+          href: "/fonts/TWKLausanne-Regular.woff2",
+          as: "font",
+          type: "font/woff2",
+          crossorigin: "anonymous",
+        },
+        {
+          rel: "preload",
+          href: "/fonts/TWKLausanne-Light.woff2",
+          as: "font",
+          type: "font/woff2",
+          crossorigin: "anonymous",
+        },
+      ],
+      // (B) Beyaz ekran (Flash) engelleme
       style: [
         {
           innerHTML: `

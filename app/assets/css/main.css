@@ -49,20 +49,21 @@
 @tailwind utilities;
 
 @layer base {
+  /* GÜNCELLEME: Font yolları public klasörüne yönlendirildi (/fonts/...) */
   @font-face {
     font-family: "TWK Lausanne";
-    src: url("../fonts/TWKLausanne-Regular.woff2") format("woff2");
+    src: url("/fonts/TWKLausanne-Regular.woff2") format("woff2");
     font-weight: 400; /* Regular standart */
     font-style: normal;
-    font-display: block;
+    font-display: swap;
   }
 
   @font-face {
     font-family: "TWK Lausanne";
-    src: url("../fonts/TWKLausanne-Light.woff2") format("woff2");
+    src: url("/fonts/TWKLausanne-Light.woff2") format("woff2");
     font-weight: 300; /* Light standart */
     font-style: normal;
-    font-display: block;
+    font-display: swap;
   }
 
   html {
@@ -117,8 +118,6 @@ html.lenis body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    /* 3. will-change KULLANMIYORUZ.
-       Böylece Safari metni bitmap olarak kaydetmiyor,
-       her frame'de vektör olarak yeniden çiziyor. */
+    /* 3. will-change KULLANMIYORUZ. */
   }
 }
