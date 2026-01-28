@@ -41,8 +41,9 @@ onMounted(() => {
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
   const split = new SplitText(logoRef.value, { type: "chars" });
 
-  // Başlangıç Değerleri
+  // Başlangıç Değerleri (JS Güvencesi)
   gsap.set(logoRef.value, { autoAlpha: 1 });
+  // scaleX: 0 zaten class olarak var ama GSAP ile de garantiye alıyoruz
   gsap.set(lineRef.value, { scaleX: 0, transformOrigin: "left center" });
 
   // --- ORTALAMA HESABI (WRAPPER) ---
@@ -69,36 +70,37 @@ onMounted(() => {
 
   // --- ANİMASYON AKIŞI ---
 
-  // 1. Logo Girişi (HIZLANDIRILMIŞ & 1PX BLUR)
+  // 1. Logo Girişi (SON AYARLAR: Hızlı & Blursuz)
   tl.from(split.chars, {
-    duration: 1.0, // 3sn -> 1.8sn (Daha seri)
-    opacity: 0, // İsteğin üzerine 1px
+    duration: 1.0, // Onaylanan: 1.0s
+    opacity: 0,
+    // filter: "blur(0px)", // Blur tamamen kalktı
     stagger: {
       from: "random",
-      amount: 0.8, // 1.5 -> 0.8 (Harfler daha hızlı tamamlanıyor)
+      amount: 0.8, // Onaylanan: 0.8s
     },
     ease: "power2.inOut",
   });
 
-  // 2. Çizgi Girişi (Metin bitmek üzereyken girer)
+  // 2. Çizgi Girişi
   tl.to(
     lineRef.value,
     {
       scaleX: 1,
-      duration: 1.5, // 1.8 -> 1.5 (Tempoya uyum sağladı)
+      duration: 1.5,
       ease: "expo.inOut",
     },
     "-=0.5",
-  ); // Bindirme payı ayarlandı
+  );
 
-  // 3. Bekleme (Minimal)
+  // 3. Bekleme
   tl.to({}, { duration: 0.1 });
 
   // 4. Çizgi Çıkışı
   tl.to(lineRef.value, {
     scaleX: 0,
     transformOrigin: "right center",
-    duration: 1.2, // Biraz hızlandırdık
+    duration: 1.2,
     ease: "expo.inOut",
   });
 
@@ -179,7 +181,7 @@ onMounted(() => {
       >
         <div
           ref="lineRef"
-          class="w-full h-[1px] bg-theme-light opacity-20"
+          class="w-full h-[1px] bg-theme-light opacity-40 scale-x-0 origin-left"
         ></div>
       </div>
     </div>
