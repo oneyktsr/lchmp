@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   // 2. CSS Dosyası
   css: ["~/assets/css/main.css"],
 
-  // 3. KRİTİK GÖRSEL İYİLEŞTİRME & FONT PRELOAD
+  // 3. HTML & HEAD OPTİMİZASYONLARI
   app: {
     head: {
       // (A) Fontları Önceden Yükle (CLS ve FCP'yi düzeltir)
@@ -40,6 +40,13 @@ export default defineNuxtConfig({
     },
   },
 
+  // 4. DENEYSEL PERFORMANS AYARLARI (GÜNCELLENDİ)
+  // 'inlineSSRStyles' hataya sebep olduğu için kaldırıldı.
+  experimental: {
+    // JS yükünü optimize eder, statik siteler için önemlidir.
+    payloadExtraction: true,
+  },
+
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -47,9 +54,11 @@ export default defineNuxtConfig({
     },
   },
 
-  // 4. PERFORMANS & CACHE AYARLARI
+  // 5. PERFORMANS & CACHE AYARLARI
   routeRules: {
-    "/**": { isr: 3600 },
+    // Siteni tamamen statik HTML olarak build eder ve CDN'den sunar.
+    // TTFB süresi sunucu beklemeksizin minimuma iner.
+    "/**": { prerender: true },
   },
 
   modules: [
@@ -64,7 +73,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
   ],
 
-  // 5. Vite Dosya İzinleri
+  // 6. Vite Dosya İzinleri
   vite: {
     server: {
       fs: {
