@@ -20,7 +20,7 @@ const sectionRef = ref(null);
 
         <RevealText
           tag="div"
-          class="text-h6 leading-none font-normal w-fit"
+          class="text-body leading-none font-normal w-fit"
           :duration="0.8"
         >
           Passion
