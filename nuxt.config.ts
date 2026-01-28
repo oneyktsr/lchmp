@@ -9,6 +9,20 @@ export default defineNuxtConfig({
   // 2. CSS Dosyası
   css: ["~/assets/css/main.css"],
 
+  // 3. KRİTİK GÖRSEL İYİLEŞTİRME (DÜZELTİLDİ)
+  // 'type' satırı silindi, sadece 'innerHTML' yeterlidir.
+  app: {
+    head: {
+      style: [
+        {
+          innerHTML: `
+            html, body { background-color: #0d0e13; margin: 0; padding: 0; }
+          `,
+        },
+      ],
+    },
+  },
+
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -16,11 +30,8 @@ export default defineNuxtConfig({
     },
   },
 
-  // 3. PERFORMANS & CACHE AYARLARI (YENİ EKLENDİ)
-  // TTFB süresini düşürmek için Vercel ISR (Incremental Static Regeneration) ayarı.
+  // 4. PERFORMANS & CACHE AYARLARI
   routeRules: {
-    // Ana sayfa ve tüm alt sayfalar 1 saat (3600sn) boyunca cache'ten sunulur.
-    // Arka planda veri değişirse Vercel onu sessizce günceller (SWR).
     "/**": { isr: 3600 },
   },
 
@@ -36,7 +47,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
   ],
 
-  // 4. Vite Dosya İzinleri
+  // 5. Vite Dosya İzinleri
   vite: {
     server: {
       fs: {

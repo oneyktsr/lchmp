@@ -1,4 +1,8 @@
 <script setup lang="ts">
+// Vercel Eklentileri
+import { SpeedInsights } from "@vercel/speed-insights/nuxt";
+import { Analytics } from "@vercel/analytics/nuxt";
+
 // Nuxt 'components' klasöründeki bileşenleri otomatik import eder.
 // Preloader.vue otomatik tanınır.
 
@@ -19,7 +23,10 @@ useHead({
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <SpeedInsights />
-    <Analytics />
+
+    <ClientOnly>
+      <SpeedInsights />
+      <Analytics />
+    </ClientOnly>
   </div>
 </template>
