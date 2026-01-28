@@ -36,13 +36,13 @@ onMounted(() => {
 <template>
   <section
     ref="sectionRef"
-    class="w-full bg-theme-dark text-theme-light pt-page-margin pb-section-gap px-page-margin"
+    class="w-full bg-theme-dark text-theme-light pt-[var(--page-margin)] pb-[var(--section-gap)] px-[var(--page-margin)]"
   >
     <div
-      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-16 lg:mb-32"
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-[calc(var(--page-margin)*3)] lg:mb-[calc(var(--page-margin)*4)]"
     >
       <div
-        class="col-span-4 md:col-span-2 lg:col-span-3 flex items-center gap-x-3 h-fit mb-8 mt-4 md:mb-0"
+        class="col-span-4 md:col-span-2 lg:col-span-3 flex items-center gap-x-3 h-fit mb-[var(--page-margin)] mt-[var(--page-margin)] md:mb-0"
       >
         <div class="w-2 h-2 rounded-full bg-theme-light shrink-0"></div>
 
@@ -56,7 +56,7 @@ onMounted(() => {
       </div>
 
       <div
-        class="col-span-4 md:col-start-3 md:col-span-6 lg:col-start-4 lg:col-span-9"
+        class="col-span-4 md:col-start-3 md:col-span-6 lg:col-start-4 lg:col-span-9 mt-[var(--page-margin)]"
       >
         <RevealText
           tag="p"
@@ -76,7 +76,7 @@ onMounted(() => {
     </div>
 
     <div
-      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-12 lg:mt-24"
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-[calc(var(--page-margin))*3] lg:mt-[calc(var(--page-margin)*3)]"
     >
       <div
         class="col-span-4 min-[400px]:col-span-1 mb-2 min-[400px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
@@ -109,7 +109,7 @@ onMounted(() => {
     </div>
 
     <div
-      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-8 lg:mt-8"
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-[calc(var(--page-margin)*2)] lg:mt-[var(--page-margin)]"
     >
       <div
         class="col-span-4 min-[400px]:col-span-1 mb-2 min-[400px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
@@ -139,7 +139,10 @@ onMounted(() => {
           digital landscape.
         </RevealText>
 
-        <div ref="buttonRef" class="mt-16 lg:mt-24 opacity-0">
+        <div
+          ref="buttonRef"
+          class="mt-[calc(var(--page-margin)*4)] lg:mt-[calc(var(--page-margin)*3)] opacity-0"
+        >
           <UiButton to="/approach" label="Explore the Method" mode="light" />
         </div>
       </div>
