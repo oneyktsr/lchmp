@@ -46,7 +46,7 @@ const initAnimation = async () => {
     // 2. BAŞLANGIÇ DURUMU
     gsap.set(splitInstance.lines, {
       yPercent: 100,
-      rotation: 1, // REVIZE: 1 derecelik çok hafif eğim
+      rotation: 0, // REVIZE: 1 derecelik çok hafif eğim
       opacity: 1,
       force3D: true,
       transformOrigin: "0% 50%",
