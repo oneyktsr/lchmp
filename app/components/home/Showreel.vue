@@ -38,7 +38,7 @@ onMounted(() => {
 <template>
   <section
     ref="sectionRef"
-    class="w-full h-[100dvh] relative bg-black overflow-hidden flex items-center justify-center"
+    class="w-full h-[100vh] relative bg-black overflow-hidden flex items-center justify-center"
   >
     <div class="absolute inset-0 w-full h-full overflow-hidden">
       <video
