@@ -2,42 +2,47 @@
 :root {
   /* Renkler */
   --bg-dark: #0d0e13;
-  --bg-light: #e4e0db; /* Light mode zemin */
-  --text-light: #e4e0db; /* Dark mode üzerindeki açık yazı */
-  --text-dark: #0d0e13; /* Light mode üzerindeki koyu yazı */
+  --bg-light: #e4e0db;
+  --text-light: #e4e0db;
+  --text-dark: #0d0e13;
 
-  /* Layout Spacing */
+  /* Layout Spacing (Aynı kalabilir) */
   --page-margin: clamp(1.25rem, calc(1.9vw + 0.8rem), 3.75rem);
   --grid-gutter: clamp(0.75rem, calc(0.75vw + 0.56rem), 2rem);
   --section-gap: clamp(3.75rem, calc(5.5vw + 2.4rem), 10rem);
 
   /* Typography Scale */
 
-  /* Display / Hero (Max 6rem) */
-  --text-display: clamp(2.75rem, 1.5rem + 3.5vw, 6rem);
+  /* Display / Hero */
+  /* Revize: Max limit 6rem -> 7.5rem | Hız 3.5vw -> 3.8vw */
+  --text-display: clamp(2.75rem, 1.5rem + 3.8vw, 7.5rem);
 
-  /* H1 (Max 4.5rem) */
-  --text-h1: clamp(2.25rem, 1rem + 2.5vw, 4.5rem);
+  /* H1 (Approach kısmındaki "We're a visionary team...") */
+  /* Revize: Max limit 4.5rem -> 5.5rem | Hız 2.5vw -> 2.8vw */
+  /* Böylece geniş ekranda yazı 72px'te kalmayıp 88px'e kadar büyüyebilecek */
+  --text-h1: clamp(2.25rem, 1rem + 2.8vw, 5.5rem);
 
-  /* H2 (Max 3.75rem) */
+  /* H2 */
   --text-h2: clamp(1.75rem, 0.8rem + 2vw, 3.75rem);
 
-  /* H3 (Max 3rem) */
+  /* H3 */
   --text-h3: clamp(1.5rem, 0.8rem + 1.5vw, 3rem);
 
-  /* H4 (Max 2rem - Logo ve Vurgu) */
-  --text-h4: clamp(1.25rem, 1rem + 0.8vw, 2rem);
+  /* H4 (Hero kısmındaki "We create digital experiences...") */
+  /* Revize: Max limit 2rem -> 2.75rem | Hız 0.8vw -> 1vw */
+  /* Geniş ekranda yazı 32px'te sıkışmayıp 44px'e kadar büyüyebilecek */
+  --text-h4: clamp(1.25rem, 1rem + 1vw, 2.75rem);
 
-  /* H5 (Ara boyut) */
+  /* H5 */
   --text-h5: clamp(1.125rem, 1rem + 0.6vw, 1.625rem);
 
-  /* H6 (En küçük başlık) */
+  /* H6 */
   --text-h6: clamp(1rem, 0.95rem + 0.4vw, 1.375rem);
 
-  /* Body (Max 1.25rem) */
-  --text-body: clamp(1rem, 0.75rem + 0.5vw, 3rem);
+  /* Body */
+  --text-body: clamp(1rem, 0.9rem + 0.25vw, 1.25rem);
 
-  /* Small (Dipnotlar) */
+  /* Small */
   --text-small: clamp(0.8125rem, 0.75rem + 0.15vw, 0.9375rem);
 
   /* Quote */
@@ -49,11 +54,10 @@
 @tailwind utilities;
 
 @layer base {
-  /* GÜNCELLEME: Font yolları public klasörüne yönlendirildi (/fonts/...) */
   @font-face {
     font-family: "TWK Lausanne";
     src: url("/fonts/TWKLausanne-Regular.woff2") format("woff2");
-    font-weight: 400; /* Regular standart */
+    font-weight: 400;
     font-style: normal;
     font-display: swap;
   }
@@ -61,7 +65,7 @@
   @font-face {
     font-family: "TWK Lausanne";
     src: url("/fonts/TWKLausanne-Light.woff2") format("woff2");
-    font-weight: 300; /* Light standart */
+    font-weight: 300;
     font-style: normal;
     font-display: swap;
   }
@@ -107,17 +111,11 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* SAFARI RENDER FIX (Temiz versiyon) */
 @layer utilities {
   .safari-render-fix {
-    /* 1. Sadece donanım hızlandırmayı aç (3D Modu) */
     transform: translate3d(0, 0, 0);
     -webkit-transform: translate3d(0, 0, 0);
-
-    /* 2. Keskinlik Ayarı */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
-    /* 3. will-change KULLANMIYORUZ. */
   }
 }
