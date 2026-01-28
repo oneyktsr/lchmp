@@ -19,5 +19,7 @@ useHead({
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
+    <SpeedInsights />
+    <Analytics />
   </div>
 </template>
