@@ -72,8 +72,7 @@ onMounted(() => {
   // 1. Logo Girişi (HIZLANDIRILMIŞ & 1PX BLUR)
   tl.from(split.chars, {
     duration: 1.5, // 3sn -> 1.8sn (Daha seri)
-    opacity: 0,
-    filter: "blur(0.2px)", // İsteğin üzerine 1px
+    opacity: 0, // İsteğin üzerine 1px
     stagger: {
       from: "random",
       amount: 0.7, // 1.5 -> 0.8 (Harfler daha hızlı tamamlanıyor)
