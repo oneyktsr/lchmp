@@ -10,9 +10,12 @@ if (process.client) {
 
 const curtainRef = ref(null);
 const logoRef = ref(null);
+const lineRef = ref(null);
+const wrapperRef = ref(null);
 const { isIntroDone } = useLoader();
 
 onMounted(() => {
+  // 1. SCROLL RESET & KİLİTLEME
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
@@ -34,58 +37,85 @@ onMounted(() => {
 
   lockScroll();
 
+  // 2. SETUP
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
   const split = new SplitText(logoRef.value, { type: "chars" });
 
+  // Başlangıç Değerleri
   gsap.set(logoRef.value, { autoAlpha: 1 });
+  gsap.set(lineRef.value, { scaleX: 0, transformOrigin: "left center" });
 
-  const rect = logoRef.value.getBoundingClientRect();
+  // --- ORTALAMA HESABI (WRAPPER) ---
+  const rect = wrapperRef.value.getBoundingClientRect();
   const screenCenterY = window.innerHeight / 2;
-  const computedStyle = window.getComputedStyle(logoRef.value);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const paddingTop = parseFloat(computedStyle.paddingTop);
   const elementCenterY = rect.top + rect.height / 2;
   const startY = screenCenterY - elementCenterY;
 
-  // SAFARI FIX: force3D: false
+  // Tüm Wrapper'ı aşağı (ortaya) indir
+  gsap.set(wrapperRef.value, { y: startY });
+
+  // Logoyu büyüt
   gsap.set(logoRef.value, {
-    y: startY,
     scale: 2,
     transformOrigin: "left center",
     force3D: false,
   });
 
-  // Fake Loader (2.5 Sn)
-  const websiteLoaded = new Promise((resolve) => {
+  const websiteReady = new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
-    }, 2500);
+    }, 100);
   });
 
-  let resolveAnimation: (value: unknown) => void;
-  const introAnimationFinished = new Promise((resolve) => {
-    resolveAnimation = resolve;
-  });
+  // --- ANİMASYON AKIŞI ---
 
+  // 1. Logo Girişi (HIZLANDIRILMIŞ & 1PX BLUR)
   tl.from(split.chars, {
-    duration: 1,
+    duration: 1.5, // 3sn -> 1.8sn (Daha seri)
     opacity: 0,
-    stagger: { from: "random", amount: 0.5 },
-    ease: "power2.out",
-    onComplete: () => resolveAnimation(true),
+    filter: "blur(0.2px)", // İsteğin üzerine 1px
+    stagger: {
+      from: "random",
+      amount: 0.7, // 1.5 -> 0.8 (Harfler daha hızlı tamamlanıyor)
+    },
+    ease: "power2.inOut",
   });
 
-  Promise.all([websiteLoaded, introAnimationFinished]).then(() => {
-    const outroTl = gsap.timeline({
-      onComplete: () => {
-        gsap.set(curtainRef.value, { display: "none" });
-        isIntroDone.value = true;
-        unlockScroll();
-      },
-    });
+  // 2. Çizgi Girişi (Metin bitmek üzereyken girer)
+  tl.to(
+    lineRef.value,
+    {
+      scaleX: 1,
+      duration: 1.5, // 1.8 -> 1.5 (Tempoya uyum sağladı)
+      ease: "expo.inOut",
+    },
+    "-=0.5",
+  ); // Bindirme payı ayarlandı
 
-    outroTl
-      .to(
+  // 3. Bekleme (Minimal)
+  tl.to({}, { duration: 0.1 });
+
+  // 4. Çizgi Çıkışı
+  tl.to(lineRef.value, {
+    scaleX: 0,
+    transformOrigin: "right center",
+    duration: 1.2, // Biraz hızlandırdık
+    ease: "expo.inOut",
+  });
+
+  // 5. Perde Kalkışı
+  tl.add(() => {
+    websiteReady.then(() => {
+      const outroTl = gsap.timeline({
+        onComplete: () => {
+          gsap.set(curtainRef.value, { display: "none" });
+          isIntroDone.value = true;
+          unlockScroll();
+        },
+      });
+
+      // Perde yukarı
+      outroTl.to(
         curtainRef.value,
         {
           yPercent: -100,
@@ -93,11 +123,23 @@ onMounted(() => {
           ease: "expo.inOut",
         },
         "reveal",
-      )
-      .to(
-        logoRef.value,
+      );
+
+      // Wrapper (Yazı+Çizgi) yukarı yerine döner
+      outroTl.to(
+        wrapperRef.value,
         {
           y: 0,
+          duration: 1.5,
+          ease: "expo.inOut",
+        },
+        "reveal",
+      );
+
+      // Logo küçülür
+      outroTl.to(
+        logoRef.value,
+        {
           scale: 1,
           duration: 1.5,
           ease: "expo.inOut",
@@ -105,6 +147,7 @@ onMounted(() => {
         },
         "reveal",
       );
+    });
   });
 });
 </script>
@@ -112,18 +155,34 @@ onMounted(() => {
 <template>
   <div
     ref="curtainRef"
-    class="fixed inset-0 z-[10000] bg-theme-dark w-full h-[100svh] pointer-events-none"
+    class="fixed inset-0 z-[10000] bg-theme-dark w-full h-[100dvh] pointer-events-none"
   ></div>
 
   <div
-    class="fixed top-page-margin left-page-margin z-[10001] mix-blend-difference origin-left pointer-events-none"
+    ref="wrapperRef"
+    class="fixed top-page-margin left-0 w-full px-page-margin z-[10001] pointer-events-none mix-blend-difference"
     style="perspective: 1000px; -webkit-perspective: 1000px"
   >
-    <h1
-      ref="logoRef"
-      class="safari-render-fix text-h4 font-normal leading-[1.1] text-theme-light invisible origin-left"
+    <div
+      class="w-full grid grid-cols-4 md:grid-cols-8 xl:grid-cols-12 gap-grid-gutter relative items-center"
     >
-      Le Champ™
-    </h1>
+      <div class="absolute left-0 origin-left flex items-center">
+        <h1
+          ref="logoRef"
+          class="safari-render-fix text-h4 font-normal leading-[1.1] text-theme-light invisible origin-left"
+        >
+          Le Champ™
+        </h1>
+      </div>
+
+      <div
+        class="col-start-3 md:col-start-5 xl:col-start-7 col-end-[-1] flex items-center"
+      >
+        <div
+          ref="lineRef"
+          class="w-full h-[1px] bg-theme-light opacity-20"
+        ></div>
+      </div>
+    </div>
   </div>
 </template>
