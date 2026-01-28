@@ -93,7 +93,7 @@ onMounted(() => {
       >
         <RevealText
           tag="p"
-          class="text-body font-light leading-tight"
+          class="text-body font-normal leading-tight"
           :delay="0.1"
           :duration="1"
         >
@@ -121,7 +121,7 @@ onMounted(() => {
       >
         <RevealText
           tag="p"
-          class="text-body font-light leading-tight"
+          class="text-body font-normal leading-tight"
           :delay="0.1"
           :duration="1"
         >
