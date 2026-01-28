@@ -83,7 +83,7 @@ watch(isIntroDone, (newVal) => {
 <template>
   <section
     ref="sectionRef"
-    class="w-full min-h-[80dvh] flex flex-col justify-between px-page-margin pb-[calc(var(--page-margin)*2)] md:pb-page-margin"
+    class="w-full min-h-[80svh] flex flex-col justify-between px-page-margin pb-[calc(var(--page-margin)*2)] md:pb-page-margin"
   >
     <div ref="heroTitleRef" class="w-full max-w-5xl hero-title-wrapper">
       <RevealText
