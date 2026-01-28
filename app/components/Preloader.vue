@@ -19,8 +19,7 @@ onMounted(() => {
   }
   window.scrollTo(0, 0);
 
-  // 2. GÜÇLENDİRİLMİŞ SCROLL KİLİDİ
-  // Hem html hem body kilitlenmeli
+  // 2. SCROLL KİLİDİ
   const lockScroll = () => {
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
@@ -35,7 +34,6 @@ onMounted(() => {
     document.body.style.height = "";
   };
 
-  // Kilidi hemen uygula
   lockScroll();
 
   // 3. ANIMASYON KURULUMU
@@ -58,13 +56,13 @@ onMounted(() => {
     transformOrigin: "left center",
   });
 
-  // 4. BEKLEME MANTIĞI (HIZLANDIRILMIŞ)
-  // window 'load' olayını beklemiyoruz (Video yüzünden gecikmesin).
-  // Sadece DOM hazır olsun yeter (onMounted bunu sağlar).
+  // 4. MİNİMUM SÜRE AYARI (Fake Loader Logic)
+  // Kullanıcı en az 2.5 saniye (2500ms) boyunca introyu izler.
+  // Bu sırada arkada video ve görseller yüklenmeye devam eder.
   const websiteLoaded = new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
-    }, 100);
+    }, 2500); // 2.5 Saniye Bekleme Süresi
   });
 
   let resolveAnimation: (value: unknown) => void;
@@ -72,6 +70,7 @@ onMounted(() => {
     resolveAnimation = resolve;
   });
 
+  // Animasyon Akışı
   tl.from(split.chars, {
     duration: 1,
     opacity: 0,
@@ -80,14 +79,14 @@ onMounted(() => {
     onComplete: () => resolveAnimation(true),
   });
 
-  // İkisi de tamamlanınca
+  // Hem süre dolunca hem de animasyon bitince perdeyi kaldır
   Promise.all([websiteLoaded, introAnimationFinished]).then(() => {
     const outroTl = gsap.timeline({
       onComplete: () => {
         gsap.set(curtainRef.value, { display: "none" });
         isIntroDone.value = true;
 
-        // Kilidi aç
+        // Kilidi aç ve siteyi kullanıcıya ver
         unlockScroll();
       },
     });
