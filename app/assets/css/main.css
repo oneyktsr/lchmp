@@ -11,7 +11,7 @@
   --grid-gutter: clamp(0.75rem, calc(0.75vw + 0.56rem), 2rem);
   --section-gap: clamp(3.75rem, calc(5.5vw + 2.4rem), 10rem);
 
-  /* Typography Scale (REVİZE EDİLDİ) */
+  /* Typography Scale */
 
   /* Display / Hero (Max 6rem) */
   --text-display: clamp(2.75rem, 1.5rem + 3.5vw, 6rem);
@@ -104,4 +104,27 @@ html.lenis body {
 }
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* YENİ EKLENEN KISIM: Safari Text Blur Fix */
+@layer utilities {
+  .safari-render-fix {
+    /* 1. GPU Hızlandırmayı Zorla */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+
+    /* 2. Arka yüzü gizle (Kenar yumuşatma sağlar) */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    /* 3. Tarayıcıya neyin değişeceğini önceden bildir */
+    will-change: transform, opacity;
+
+    /* 4. Font Netleştirme */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* 5. Piksel titremesini önle */
+    perspective: 1000px;
+  }
 }

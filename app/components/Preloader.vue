@@ -19,7 +19,8 @@ onMounted(() => {
   }
   window.scrollTo(0, 0);
 
-  // 2. SCROLL KİLİDİ
+  // 2. GÜÇLENDİRİLMİŞ SCROLL KİLİDİ
+  // Hem html hem body kilitlenmeli
   const lockScroll = () => {
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
@@ -34,9 +35,10 @@ onMounted(() => {
     document.body.style.height = "";
   };
 
+  // Kilidi hemen uygula
   lockScroll();
 
-  // 3. ANIMASYON HAZIRLIKLARI
+  // 3. ANIMASYON KURULUMU
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
   const split = new SplitText(logoRef.value, { type: "chars" });
 
@@ -56,23 +58,20 @@ onMounted(() => {
     transformOrigin: "left center",
   });
 
-  // --- KRİTİK DÜZELTME BURADA ---
-  // Eskiden tüm sayfanın (video dahil) yüklenmesini bekliyorduk.
-  // Şimdi beklemiyoruz. onMounted zaten DOM'un hazır olduğunu garanti eder.
-  // Sadece minik bir gecikme (100ms) koyuyoruz ki tarayıcı nefes alsın.
+  // 4. BEKLEME MANTIĞI (HIZLANDIRILMIŞ)
+  // window 'load' olayını beklemiyoruz (Video yüzünden gecikmesin).
+  // Sadece DOM hazır olsun yeter (onMounted bunu sağlar).
   const websiteLoaded = new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
     }, 100);
   });
-  // -------------------------------
 
   let resolveAnimation: (value: unknown) => void;
   const introAnimationFinished = new Promise((resolve) => {
     resolveAnimation = resolve;
   });
 
-  // Giriş Animasyonu
   tl.from(split.chars, {
     duration: 1,
     opacity: 0,
@@ -81,13 +80,15 @@ onMounted(() => {
     onComplete: () => resolveAnimation(true),
   });
 
-  // İkisi de bitince (ki websiteLoaded artık hemen bitecek) Perdeyi Kaldır
+  // İkisi de tamamlanınca
   Promise.all([websiteLoaded, introAnimationFinished]).then(() => {
     const outroTl = gsap.timeline({
       onComplete: () => {
         gsap.set(curtainRef.value, { display: "none" });
         isIntroDone.value = true;
-        unlockScroll(); // Kilidi aç
+
+        // Kilidi aç
+        unlockScroll();
       },
     });
 
@@ -123,7 +124,7 @@ onMounted(() => {
 
   <h1
     ref="logoRef"
-    class="fixed top-page-margin left-page-margin z-[10001] text-h4 font-normal leading-[1.1] text-theme-light mix-blend-difference invisible origin-left"
+    class="safari-render-fix fixed top-page-margin left-page-margin z-[10001] text-h4 font-normal leading-[1.1] text-theme-light mix-blend-difference invisible origin-left"
   >
     Le Champ™
   </h1>
