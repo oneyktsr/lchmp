@@ -79,20 +79,20 @@ onMounted(() => {
       class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-12 lg:mt-24"
     >
       <div
-        class="col-span-4 min-[450px]:col-span-1 mb-2 min-[450px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
+        class="col-span-4 min-[400px]:col-span-1 mb-2 min-[400px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
       >
         <RevealText
           tag="span"
           class="text-body text-theme-light font-normal leading-[1.1]"
         >
           <span class="hidden md:inline">/ </span>What
-          <br class="hidden min-[450px]:block md:hidden" />
+          <br class="hidden min-[400px]:block md:hidden" />
           Drives Us
         </RevealText>
       </div>
 
       <div
-        class="col-span-4 min-[450px]:col-span-3 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
+        class="col-span-4 min-[400px]:col-span-3 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
       >
         <RevealText
           tag="p"
@@ -112,20 +112,20 @@ onMounted(() => {
       class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-8 lg:mt-8"
     >
       <div
-        class="col-span-4 min-[450px]:col-span-1 mb-2 min-[450px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
+        class="col-span-4 min-[400px]:col-span-1 mb-2 min-[400px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
       >
         <RevealText
           tag="span"
           class="text-body text-theme-light font-normal leading-[1.1]"
         >
           <span class="hidden md:inline">/ </span>Our
-          <br class="hidden min-[450px]:block md:hidden" />
+          <br class="hidden min-[400px]:block md:hidden" />
           Approach
         </RevealText>
       </div>
 
       <div
-        class="col-span-4 min-[450px]:col-span-3 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
+        class="col-span-4 min-[400px]:col-span-3 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
       >
         <RevealText
           tag="p"
