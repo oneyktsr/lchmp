@@ -1,8 +1,38 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import gsap from "~/lib/gsap/index.js";
+import { ScrollTrigger } from "~/lib/gsap/ScrollTrigger.js";
 // RevealText içinde ScrollTrigger ve SplitText zaten yönetiliyor.
 
+if (process.client) {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 const sectionRef = ref(null);
+const buttonRef = ref(null); // Buton için referans
+
+onMounted(() => {
+  // Buton Animasyonu (ScrollTrigger ile ekrana girince çalışır)
+  if (buttonRef.value) {
+    gsap.fromTo(
+      buttonRef.value,
+      { autoAlpha: 0, y: 20 }, // Başlangıç: Görünmez ve biraz aşağıda
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.4, // Metinden hemen sonra gelmesi için gecikme
+        scrollTrigger: {
+          trigger: buttonRef.value,
+          start: "top 95%", // Ekranın altına yaklaşınca başla
+          toggleActions: "play none none none",
+          once: true, // Sadece 1 kere oynat
+        },
+      },
+    );
+  }
+});
 </script>
 
 <template>
@@ -76,7 +106,7 @@ const sectionRef = ref(null);
     </div>
 
     <div
-      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-8 lg:mt-8"
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-8 lg:mt-4"
     >
       <div
         class="col-span-4 mb-2 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
@@ -100,6 +130,10 @@ const sectionRef = ref(null);
           and effective, helping brands grow and resonate in an ever — changing
           digital landscape.
         </RevealText>
+
+        <div ref="buttonRef" class="mt-16 lg:mt-24 opacity-0">
+          <UiButton to="/approach" label="Explore the Method" mode="light" />
+        </div>
       </div>
     </div>
   </section>
