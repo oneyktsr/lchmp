@@ -13,17 +13,17 @@ const logoRef = ref(null);
 const { isIntroDone } = useLoader();
 
 onMounted(() => {
+  // 1. SCROLL RESTORATION & RESET
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
   window.scrollTo(0, 0);
 
-  // --- GÜÇLENDİRİLMİŞ SCROLL KİLİDİ ---
-  // Sadece body yetmez, html elementini de kilitlemeliyiz.
+  // 2. SCROLL KİLİDİ
   const lockScroll = () => {
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
-    document.documentElement.style.height = "100%"; // Ekstra güvenlik
+    document.documentElement.style.height = "100%";
     document.body.style.height = "100%";
   };
 
@@ -34,10 +34,9 @@ onMounted(() => {
     document.body.style.height = "";
   };
 
-  // Kilidi hemen uygula
   lockScroll();
-  // ------------------------------------
 
+  // 3. ANIMASYON HAZIRLIKLARI
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
   const split = new SplitText(logoRef.value, { type: "chars" });
 
@@ -57,19 +56,23 @@ onMounted(() => {
     transformOrigin: "left center",
   });
 
+  // --- KRİTİK DÜZELTME BURADA ---
+  // Eskiden tüm sayfanın (video dahil) yüklenmesini bekliyorduk.
+  // Şimdi beklemiyoruz. onMounted zaten DOM'un hazır olduğunu garanti eder.
+  // Sadece minik bir gecikme (100ms) koyuyoruz ki tarayıcı nefes alsın.
   const websiteLoaded = new Promise((resolve) => {
-    if (document.readyState === "complete") {
+    setTimeout(() => {
       resolve(true);
-    } else {
-      window.addEventListener("load", () => resolve(true));
-    }
+    }, 100);
   });
+  // -------------------------------
 
   let resolveAnimation: (value: unknown) => void;
   const introAnimationFinished = new Promise((resolve) => {
     resolveAnimation = resolve;
   });
 
+  // Giriş Animasyonu
   tl.from(split.chars, {
     duration: 1,
     opacity: 0,
@@ -78,15 +81,13 @@ onMounted(() => {
     onComplete: () => resolveAnimation(true),
   });
 
+  // İkisi de bitince (ki websiteLoaded artık hemen bitecek) Perdeyi Kaldır
   Promise.all([websiteLoaded, introAnimationFinished]).then(() => {
     const outroTl = gsap.timeline({
       onComplete: () => {
         gsap.set(curtainRef.value, { display: "none" });
         isIntroDone.value = true;
-
-        // --- KİLİDİ AÇ ---
-        unlockScroll();
-        // -----------------
+        unlockScroll(); // Kilidi aç
       },
     });
 
