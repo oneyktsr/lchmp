@@ -20,24 +20,21 @@ if (process.client) {
 const textRef = ref(null);
 let splitInstance: any = null;
 
-// --- ANİMASYONU OYNAT ---
 const playAnimation = () => {
   if (!splitInstance || !splitInstance.lines) return;
 
-  // SADECE YUKARI KAYDIR (Opaklık değişimi yok)
+  // Görünür yap ve animasyonu başlat
+  if (textRef.value) {
+    gsap.set(textRef.value, { autoAlpha: 1 }); // CSS'teki invisible'ı ezer
+  }
+
   gsap.to(splitInstance.lines, {
     yPercent: 0,
-    // opacity satırını buradan sildik.
     duration: props.duration,
     stagger: props.stagger,
     delay: props.delay,
     ease: "power4.out",
-    force3D: true,
-
-    // Animasyon başlarken Parent container'ı görünür yap
-    onStart: () => {
-      if (textRef.value) gsap.set(textRef.value, { autoAlpha: 1 });
-    },
+    // force3D: true, // Gereksiz GPU yükünü azalttık (CSS will-change yeterli)
   });
 };
 
@@ -45,6 +42,7 @@ onMounted(() => {
   if (!textRef.value) return;
 
   // 1. Metni Parçala
+  // invisible olsa bile SplitText boyut hesaplayabilir (display:none olmamalı)
   splitInstance = SplitText.create(textRef.value, {
     type: "lines",
     mask: "lines",
@@ -52,30 +50,20 @@ onMounted(() => {
     autoSplit: true,
   });
 
-  // 2. BAŞLANGIÇ POZİSYONU
-  if (!isIntroDone.value) {
-    // Intro bitmemişse:
-    // A) Parent'ı komple gizle (Güvenlik önlemi)
-    gsap.set(textRef.value, { autoAlpha: 0 });
-
-    // B) Satırları aşağı it ama OPAKLIĞI KORU (Solid)
-    if (splitInstance.lines) {
-      gsap.set(splitInstance.lines, {
-        yPercent: 100,
-        opacity: 1, // <-- Önemli: Silik değil, tam görünür bekliyor.
-      });
-    }
-  } else {
-    // Intro çoktan bitmişse (Sayfa değişimi):
-    if (splitInstance.lines) {
-      // Başlamadan önce aşağı al
-      gsap.set(splitInstance.lines, { yPercent: 100, opacity: 1 });
-      playAnimation();
-    }
+  // 2. SATIRLARI HAZIRLA
+  if (splitInstance.lines) {
+    // Satırları maskenin altına it
+    gsap.set(splitInstance.lines, { yPercent: 100 });
   }
+
+  // 3. DURUMA GÖRE BAŞLAT
+  if (isIntroDone.value) {
+    // Intro zaten bittiyse (Sayfa değişimi) hemen oynat
+    playAnimation();
+  }
+  // Intro bitmediyse watch bekleyecek (CSS sayesinde ekranda görünmüyor)
 });
 
-// 3. SİNYAL BEKLE
 watch(isIntroDone, (newVal) => {
   if (newVal) {
     playAnimation();
@@ -88,7 +76,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <component :is="tag" ref="textRef" class="reveal-text-wrapper">
+  <component :is="tag" ref="textRef" class="reveal-text-wrapper invisible">
     <slot />
   </component>
 </template>
@@ -99,11 +87,10 @@ onUnmounted(() => {
   font-kerning: none;
 }
 
-/* Maskeleme */
 :deep(.reveal-line-child-mask) {
   padding-bottom: 0.15em;
   margin-bottom: -0.15em;
   display: block;
-  overflow: hidden; /* Maskenin çalışması için şart */
+  overflow: hidden;
 }
 </style>

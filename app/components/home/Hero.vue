@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from "vue"; // onUnmounted eklendi
+import { ref, onMounted, onUnmounted, watch } from "vue";
 import gsap from "~/lib/gsap/index.js";
 import { ScrollTrigger } from "~/lib/gsap/ScrollTrigger.js";
 import { useLoader } from "~/composables/useLoader";
@@ -14,36 +14,30 @@ const sectionRef = ref(null);
 
 const { isIntroDone } = useLoader();
 
-// MatchMedia değişkenini dışarıda tanımlıyoruz ki temizleyebilelim
 let mm: gsap.MatchMedia;
 
 const playButtonAnimation = () => {
   if (!buttonRef.value) return;
 
-  gsap.fromTo(
-    buttonRef.value,
-    { autoAlpha: 0 },
-    {
-      autoAlpha: 1,
-      duration: 1,
-      ease: "power3.out",
-      delay: 0.6,
-    },
-  );
+  gsap.to(buttonRef.value, {
+    autoAlpha: 1, // opacity-0'dan 1'e
+    duration: 1,
+    ease: "power3.out",
+    delay: 0.6,
+  });
 };
 
 onMounted(() => {
-  // 1. Buton Başlangıç
-  gsap.set(buttonRef.value, { autoAlpha: 0 });
+  // 1. BUTON KONTROLÜ
+  // Eğer intro bitmişse butonu hemen aç, yoksa bekle
   if (isIntroDone.value) {
     playButtonAnimation();
   }
 
-  // 2. RESPONSIVE PARALLAX (LAG EFFECT)
+  // 2. PARALLAX (ScrollTrigger)
   if (heroTitleRef.value && sectionRef.value) {
     mm = gsap.matchMedia();
 
-    // Breakpointleri tanımla (Tailwind 'md' = 768px)
     mm.add(
       {
         isMobile: "(max-width: 767px)",
@@ -53,7 +47,6 @@ onMounted(() => {
         const { isMobile } = context.conditions as { isMobile: boolean };
 
         gsap.to(heroTitleRef.value, {
-          // İSTEĞİN: Mobilse 150, Değilse 100
           yPercent: isMobile ? 150 : 100,
           ease: "none",
           scrollTrigger: {
@@ -68,7 +61,6 @@ onMounted(() => {
   }
 });
 
-// Temizlik: Sayfa değişince event listener'ları sil
 onUnmounted(() => {
   if (mm) mm.revert();
 });
@@ -125,7 +117,6 @@ watch(isIntroDone, (newVal) => {
 
 <style scoped>
 .hero-title-wrapper {
-  /* Mobil: x2.5 */
   padding-top: calc((var(--page-margin) * 2.5) + var(--text-h4) - 0.7em);
   margin-left: -0.08em;
   will-change: transform;
@@ -133,7 +124,6 @@ watch(isIntroDone, (newVal) => {
 
 @media (min-width: 768px) {
   .hero-title-wrapper {
-    /* Desktop: x2 */
     padding-top: calc((var(--page-margin) * 2) + var(--text-h4) - 0.7em);
   }
 }
