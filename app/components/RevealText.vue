@@ -8,7 +8,7 @@ import { useLoader } from "~/composables/useLoader";
 const props = defineProps({
   tag: { type: String, default: "div" },
   // REVIZE 1: Varsayılan süre 1.0'dan 0.8'e çekildi (Daha hızlı)
-  duration: { type: Number, default: 0 },
+  duration: { type: Number, default: 0.1 },
   stagger: { type: Number, default: 0.1 },
   delay: { type: Number, default: 0 },
 });
