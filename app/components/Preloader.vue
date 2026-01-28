@@ -13,13 +13,11 @@ const logoRef = ref(null);
 const { isIntroDone } = useLoader();
 
 onMounted(() => {
-  // 1. SCROLL RESTORATION & RESET
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
   window.scrollTo(0, 0);
 
-  // 2. SCROLL KİLİDİ
   const lockScroll = () => {
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
@@ -36,7 +34,6 @@ onMounted(() => {
 
   lockScroll();
 
-  // 3. ANIMASYON KURULUMU
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
   const split = new SplitText(logoRef.value, { type: "chars" });
 
@@ -50,19 +47,19 @@ onMounted(() => {
   const elementCenterY = rect.top + rect.height / 2;
   const startY = screenCenterY - elementCenterY;
 
+  // SAFARI FIX: force3D: false
   gsap.set(logoRef.value, {
     y: startY,
     scale: 2,
     transformOrigin: "left center",
+    force3D: false,
   });
 
-  // 4. MİNİMUM SÜRE AYARI (Fake Loader Logic)
-  // Kullanıcı en az 2.5 saniye (2500ms) boyunca introyu izler.
-  // Bu sırada arkada video ve görseller yüklenmeye devam eder.
+  // Fake Loader (2.5 Sn)
   const websiteLoaded = new Promise((resolve) => {
     setTimeout(() => {
       resolve(true);
-    }, 2500); // 2.5 Saniye Bekleme Süresi
+    }, 2500);
   });
 
   let resolveAnimation: (value: unknown) => void;
@@ -70,7 +67,6 @@ onMounted(() => {
     resolveAnimation = resolve;
   });
 
-  // Animasyon Akışı
   tl.from(split.chars, {
     duration: 1,
     opacity: 0,
@@ -79,14 +75,11 @@ onMounted(() => {
     onComplete: () => resolveAnimation(true),
   });
 
-  // Hem süre dolunca hem de animasyon bitince perdeyi kaldır
   Promise.all([websiteLoaded, introAnimationFinished]).then(() => {
     const outroTl = gsap.timeline({
       onComplete: () => {
         gsap.set(curtainRef.value, { display: "none" });
         isIntroDone.value = true;
-
-        // Kilidi aç ve siteyi kullanıcıya ver
         unlockScroll();
       },
     });
@@ -108,6 +101,7 @@ onMounted(() => {
           scale: 1,
           duration: 1.5,
           ease: "expo.inOut",
+          force3D: false,
         },
         "reveal",
       );
@@ -121,10 +115,15 @@ onMounted(() => {
     class="fixed inset-0 z-[10000] bg-theme-dark w-full h-[100dvh] pointer-events-none"
   ></div>
 
-  <h1
-    ref="logoRef"
-    class="safari-render-fix fixed top-page-margin left-page-margin z-[10001] text-h4 font-normal leading-[1.1] text-theme-light mix-blend-difference invisible origin-left"
+  <div
+    class="fixed top-page-margin left-page-margin z-[10001] mix-blend-difference origin-left pointer-events-none"
+    style="perspective: 1000px; -webkit-perspective: 1000px"
   >
-    Le Champ™
-  </h1>
+    <h1
+      ref="logoRef"
+      class="safari-render-fix text-h4 font-normal leading-[1.1] text-theme-light invisible origin-left"
+    >
+      Le Champ™
+    </h1>
+  </div>
 </template>

@@ -34,7 +34,7 @@
   /* H6 (En küçük başlık) */
   --text-h6: clamp(1rem, 0.95rem + 0.4vw, 1.375rem);
 
-  /* Body (Hafif büyütüldü: Max 1.25rem) */
+  /* Body (Max 1.25rem) */
   --text-body: clamp(1rem, 0.9rem + 0.25vw, 1.25rem);
 
   /* Small (Dipnotlar) */
@@ -106,25 +106,19 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* YENİ EKLENEN KISIM: Safari Text Blur Fix */
+/* SAFARI RENDER FIX (Temiz versiyon) */
 @layer utilities {
   .safari-render-fix {
-    /* 1. GPU Hızlandırmayı Zorla */
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    /* 1. Sadece donanım hızlandırmayı aç (3D Modu) */
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
 
-    /* 2. Arka yüzü gizle (Kenar yumuşatma sağlar) */
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    /* 3. Tarayıcıya neyin değişeceğini önceden bildir */
-    will-change: transform, opacity;
-
-    /* 4. Font Netleştirme */
+    /* 2. Keskinlik Ayarı */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    /* 5. Piksel titremesini önle */
-    perspective: 1000px;
+    /* 3. will-change KULLANMIYORUZ.
+       Böylece Safari metni bitmap olarak kaydetmiyor,
+       her frame'de vektör olarak yeniden çiziyor. */
   }
 }
