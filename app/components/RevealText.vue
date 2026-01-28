@@ -25,13 +25,11 @@ let ctx: gsap.Context | null = null;
 const initAnimation = async () => {
   if (!textRef.value) return;
 
-  // DOM ve Fontların hazır olmasını bekle (Performans ve Layout için kritik)
+  // DOM ve Fontların hazır olmasını bekle
   await nextTick();
   try {
     await document.fonts.ready;
-  } catch (e) {
-    // Font yükleme hatası olursa devam et
-  }
+  } catch (e) {}
 
   // Temizlik
   if (ctx) ctx.revert();
@@ -42,43 +40,42 @@ const initAnimation = async () => {
     splitInstance = new SplitText(textRef.value, {
       type: "lines",
       linesClass: "reveal-line",
-      mask: "lines", // Maskeleme açık
+      mask: "lines",
     });
 
     if (!splitInstance.lines || splitInstance.lines.length === 0) return;
 
-    // 2. BAŞLANGIÇ DURUMU (OPTIMIZE EDİLDİ)
-    // Opacity animasyonu KALDIRILDI. Metinler solid (opacity: 1) başlar.
-    // Sadece aşağı itiyoruz (yPercent: 100).
+    // 2. BAŞLANGIÇ DURUMU
     gsap.set(splitInstance.lines, {
       yPercent: 100,
-      opacity: 1, // <-- Silik gelmemesi için 1 yapıldı.
-      force3D: true, // GPU katmanına al
-      rotationZ: 0.01, // Safari/Chrome anti-aliasing titreşimini engeller
+      rotation: 2, // <--- YENİ: Hafif rotasyon eklendi (İsteğin üzerine 2 derece)
+      opacity: 1,
+      force3D: true,
+      transformOrigin: "0% 50%", // Sol taraftan pivot alarak dönmesi daha doğal durur
     });
 
     // Wrapper'ı görünür yap
     gsap.set(textRef.value, { autoAlpha: 1 });
 
-    // 3. ANIMASYON (YÜKSEK PERFORMANS)
+    // 3. ANIMASYON
     gsap.to(splitInstance.lines, {
       yPercent: 0,
+      rotation: 0, // <--- YENİ: Rotasyon sıfırlanır (Düz hale gelir)
       duration: props.duration,
       stagger: props.stagger,
       delay: props.delay,
-      ease: "power3.out", // "power4" yerine "power3" daha doğal ve akıcı hissettirir
+      ease: "power3.out",
 
       scrollTrigger: {
         trigger: textRef.value,
-        start: "top 95%", // Biraz daha erken yakalaması için 95%
+        start: "top 95%",
         toggleActions: "play none none none",
-        once: true, // Sadece 1 kere çalışır ve bellekten silinir
+        once: true,
       },
 
-      // Animasyon bittiğinde GPU belleğini rahatlat
       onComplete: () => {
         gsap.set(splitInstance.lines, {
-          clearProps: "willChange,force3D,rotationZ",
+          clearProps: "willChange,force3D,rotation,transformOrigin",
         });
       },
     });
@@ -86,7 +83,6 @@ const initAnimation = async () => {
 };
 
 onMounted(() => {
-  // Başlangıçta gizli
   if (textRef.value) {
     gsap.set(textRef.value, { autoAlpha: 0 });
   }
@@ -115,16 +111,14 @@ onUnmounted(() => {
 
 <style scoped>
 .reveal-text-wrapper {
-  /* Font render optimizasyonları */
   font-kerning: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 :deep(.reveal-line) {
-  /* Kesilmeleri önlemek için minik padding */
   padding-bottom: 0.1em;
   margin-bottom: -0.1em;
-  will-change: transform; /* Tarayıcıya ipucu ver */
+  will-change: transform;
 }
 </style>
