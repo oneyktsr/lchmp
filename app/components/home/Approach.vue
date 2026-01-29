@@ -12,12 +12,13 @@ const buttonRef = ref(null);
 
 onMounted(() => {
   if (buttonRef.value) {
+    // REVIZE: y (dikey hareket) parametreleri kaldırıldı.
+    // Sadece autoAlpha (opacity + visibility) geçişi kaldı.
     gsap.fromTo(
       buttonRef.value,
-      { autoAlpha: 0, y: 20 },
+      { autoAlpha: 0 }, // Başlangıç: Sadece görünmez
       {
-        autoAlpha: 1,
-        y: 0,
+        autoAlpha: 1, // Bitiş: Görünür
         duration: 1,
         ease: "power3.out",
         delay: 0.4,

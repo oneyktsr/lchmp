@@ -44,12 +44,12 @@ const props = withDefaults(defineProps<Props>(), {
     </div>
 
     <div class="relative overflow-hidden pb-[4px]">
-      <span class="block text-body font-normal leading-none tracking-tight">
+      <span class="block text-h6 font-normal leading-none tracking-tight">
         <slot>{{ label }}</slot>
       </span>
 
       <span
-        class="absolute bottom-0 left-0 h-[1.5px] w-full bg-current origin-right scale-x-100 transition-transform duration-500 ease-flow group-hover:scale-x-0"
+        class="absolute bottom-0 left-0 h-[1px] w-full bg-current origin-right scale-x-100 transition-transform duration-500 ease-flow group-hover:scale-x-0"
       ></span>
     </div>
   </NuxtLink>
