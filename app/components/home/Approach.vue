@@ -36,13 +36,13 @@ onMounted(() => {
 <template>
   <section
     ref="sectionRef"
-    class="w-full bg-theme-dark text-theme-light pt-[var(--page-margin)] pb-[var(--section-gap)] px-[var(--page-margin)]"
+    class="w-full bg-theme-dark text-theme-light pt-[var(--page-margin)] pb-[var(--page-margin)] lg:pb-[var(--section-gap)] px-[var(--page-margin)]"
   >
     <div
-      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-[calc(var(--page-margin)*3)] lg:mb-[calc(var(--page-margin)*4)]"
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-[calc(var(--page-margin)*4)] lg:mb-[calc(var(--page-margin)*4)]"
     >
       <div
-        class="col-span-4 md:col-span-2 lg:col-span-3 flex items-center gap-x-3 h-fit mb-[var(--page-margin)] mt-[var(--page-margin)] md:mb-0"
+        class="col-span-4 md:col-span-2 lg:col-span-3 flex items-center gap-x-3 h-fit mb-[calc(var(--page-margin)*2)] mt-[var(--page-margin)] md:mb-0"
       >
         <div class="w-2 h-2 rounded-full bg-theme-light shrink-0"></div>
 
@@ -76,23 +76,21 @@ onMounted(() => {
     </div>
 
     <div
-      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-[calc(var(--page-margin))*3] lg:mt-[calc(var(--page-margin)*3)]"
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-[calc(var(--page-margin)*3)] lg:mt-[calc(var(--page-margin)*3)]"
     >
       <div
-        class="col-span-4 min-[400px]:col-span-1 mb-2 min-[400px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
+        class="col-span-4 mb-2 md:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
       >
         <RevealText
           tag="span"
           class="text-body text-theme-light font-normal leading-[1.1]"
         >
-          <span class="hidden md:inline">/ </span>What
-          <br class="hidden min-[400px]:block md:hidden" />
-          Drives Us
+          / What Drives Us
         </RevealText>
       </div>
 
       <div
-        class="col-span-4 min-[400px]:col-span-3 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
+        class="col-span-4 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
       >
         <RevealText
           tag="p"
@@ -112,20 +110,18 @@ onMounted(() => {
       class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-[calc(var(--page-margin)*2)] lg:mt-[var(--page-margin)]"
     >
       <div
-        class="col-span-4 min-[400px]:col-span-1 mb-2 min-[400px]:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
+        class="col-span-4 mb-2 md:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
       >
         <RevealText
           tag="span"
           class="text-body text-theme-light font-normal leading-[1.1]"
         >
-          <span class="hidden md:inline">/ </span>Our
-          <br class="hidden min-[400px]:block md:hidden" />
-          Approach
+          / Our Approach
         </RevealText>
       </div>
 
       <div
-        class="col-span-4 min-[400px]:col-span-3 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
+        class="col-span-4 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
       >
         <RevealText
           tag="p"
@@ -141,7 +137,7 @@ onMounted(() => {
 
         <div
           ref="buttonRef"
-          class="mt-[calc(var(--page-margin)*4)] lg:mt-[calc(var(--page-margin)*3)] opacity-0"
+          class="mt-[calc(var(--page-margin)*4)] mb-[calc(var(--page-margin)*4)] lg:mt-[calc(var(--page-margin)*3)] lg:mb-0 opacity-0"
         >
           <UiButton to="/approach" label="Explore the Method" mode="light" />
         </div>
