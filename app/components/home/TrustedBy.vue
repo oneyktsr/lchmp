@@ -1,130 +1,148 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted } from "vue";
 import gsap from "~/lib/gsap/index.js";
+import { ScrollTrigger } from "~/lib/gsap/ScrollTrigger.js";
 
-// Placeholder Logolar
-const brands = [
-  { name: "NEXUS", shape: "rect" },
-  { name: "VORTEX", shape: "circle" },
-  { name: "KINETIC", shape: "triangle" },
-  { name: "AETHER", shape: "rect" },
-  { name: "ECHO", shape: "circle" },
-  { name: "PRISM", shape: "triangle" },
-  { name: "FLUX", shape: "rect" },
-  { name: "ORBIT", shape: "circle" },
-  { name: "ZENITH", shape: "triangle" },
-];
+if (process.client) {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
-const marqueeInnerRef = ref(null);
-let animation: gsap.core.Tween | null = null;
+const sectionRef = ref(null);
+const buttonRef = ref(null);
 
 onMounted(() => {
-  if (!marqueeInnerRef.value) return;
-
-  // Sonsuz Kaydırma Animasyonu
-  animation = gsap.to(marqueeInnerRef.value, {
-    xPercent: -50,
-    ease: "none",
-    duration: 20,
-    repeat: -1,
-  });
-});
-
-onUnmounted(() => {
-  if (animation) animation.kill();
+  if (buttonRef.value) {
+    // REVIZE: y (dikey hareket) parametreleri kaldırıldı.
+    // Sadece autoAlpha (opacity + visibility) geçişi kaldı.
+    gsap.fromTo(
+      buttonRef.value,
+      { autoAlpha: 0 }, // Başlangıç: Sadece görünmez
+      {
+        autoAlpha: 1, // Bitiş: Görünür
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.4,
+        scrollTrigger: {
+          trigger: buttonRef.value,
+          start: "top 95%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      },
+    );
+  }
 });
 </script>
 
 <template>
   <section
-    class="w-full bg-theme-dark text-theme-light pt-page-margin pb-section-gap px-page-margin overflow-hidden"
+    ref="sectionRef"
+    class="w-full bg-theme-dark text-theme-light pt-[var(--page-margin)] pb-[var(--page-margin)] lg:pb-[var(--section-gap)] px-[var(--page-margin)]"
   >
     <div
-      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-6 lg:mb-10 items-baseline"
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-[calc(var(--page-margin)*4)] lg:mb-[calc(var(--page-margin)*4)]"
     >
-      <div class="col-span-2 md:col-span-4 lg:col-span-6">
+      <div
+        class="col-span-4 md:col-span-2 lg:col-span-3 flex items-center gap-x-3 h-fit mb-[calc(var(--page-margin)*2)] mt-[var(--page-margin)] md:mb-0"
+      >
+        <div class="w-2 h-2 rounded-full bg-theme-light shrink-0"></div>
+
         <RevealText
-          tag="h2"
-          class="text-small font-normal text-theme-light"
+          tag="div"
+          class="text-body leading-none font-normal w-fit"
           :duration="0.8"
         >
-          Trusted By
+          Passion
         </RevealText>
       </div>
 
       <div
-        class="col-span-2 md:col-span-4 lg:col-span-6 text-right md:text-right"
+        class="col-span-4 md:col-start-3 md:col-span-6 lg:col-start-4 lg:col-span-9 mt-[var(--page-margin)]"
       >
-        <div class="opacity-40 inline-block">
-          <RevealText
-            tag="span"
-            class="text-small font-normal text-theme-light block"
-            :duration="0.8"
-            :delay="0.1"
-          >
-            (2018 — 2026)
-          </RevealText>
-        </div>
+        <RevealText
+          tag="p"
+          class="text-h1 font-normal leading-[1.1] tracking-tighter pb-2 text-theme-light"
+          :duration="1.2"
+          :stagger="0.05"
+        >
+          <span
+            class="float-left h-[10px] hidden md:block md:w-[calc(100%/6)] lg:w-[calc((100%/9)*2)]"
+            aria-hidden="true"
+          ></span>
+
+          We're a visionary team producing innovative work in design &
+          technology. For us, this is more than just work.
+        </RevealText>
       </div>
     </div>
 
-    <div class="w-full relative flex overflow-hidden mask-gradient">
+    <div
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-[calc(var(--page-margin)*3)] lg:mt-[calc(var(--page-margin)*3)]"
+    >
       <div
-        ref="marqueeInnerRef"
-        class="flex items-center w-max gap-x-12 md:gap-x-24 lg:gap-x-32 pr-12 md:pr-24 lg:pr-32 will-change-transform"
+        class="col-span-4 mb-2 md:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
       >
-        <div
-          v-for="set in 2"
-          :key="`set-${set}`"
-          class="flex items-center gap-x-12 md:gap-x-24 lg:gap-x-32 shrink-0"
+        <RevealText
+          tag="span"
+          class="text-body text-theme-light font-normal leading-[1.1]"
         >
-          <div
-            v-for="(brand, i) in brands"
-            :key="`brand-${set}-${i}`"
-            class="group flex items-center gap-x-3 opacity-50 hover:opacity-100 transition-opacity duration-300"
-          >
-            <svg
-              class="w-auto h-6 md:h-6 lg:h-7 fill-current text-theme-light"
-              viewBox="0 0 30 30"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect v-if="brand.shape === 'rect'" width="30" height="30" />
-              <circle
-                v-else-if="brand.shape === 'circle'"
-                cx="15"
-                cy="15"
-                r="15"
-              />
-              <path v-else d="M15 0 L30 30 L0 30 Z" />
-            </svg>
+          / What Drives Us
+        </RevealText>
+      </div>
 
-            <span
-              class="text-h6 font-bold tracking-tight text-theme-light hidden md:block"
-            >
-              {{ brand.name }}
-            </span>
-          </div>
+      <div
+        class="col-span-4 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
+      >
+        <RevealText
+          tag="p"
+          class="text-body font-light leading-tight"
+          :delay="0.1"
+          :duration="1"
+        >
+          It’s a passion for creating the next generation of digital
+          experiences. Every project is an opportunity to explore new ideas,
+          push boundaries, and create solutions that truly connect with
+          audiences.
+        </RevealText>
+      </div>
+    </div>
+
+    <div
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mt-[calc(var(--page-margin)*2)] lg:mt-[var(--page-margin)]"
+    >
+      <div
+        class="col-span-4 mb-2 md:mb-0 md:col-start-5 md:col-span-3 lg:col-start-5 lg:col-span-3 lg:mb-0 opacity-40"
+      >
+        <RevealText
+          tag="span"
+          class="text-body text-theme-light font-normal leading-[1.1]"
+        >
+          / Our Approach
+        </RevealText>
+      </div>
+
+      <div
+        class="col-span-4 md:col-start-5 md:col-span-3 lg:col-start-8 lg:col-span-3"
+      >
+        <RevealText
+          tag="p"
+          class="text-body font-light leading-tight"
+          :delay="0.1"
+          :duration="1"
+        >
+          By combining creativity, technology, and strategic thinking, we
+          deliver work that is not only visually compelling but also meaningful
+          and effective, helping brands grow and resonate in an ever — changing
+          digital landscape.
+        </RevealText>
+
+        <div
+          ref="buttonRef"
+          class="mt-[calc(var(--page-margin)*4)] mb-[calc(var(--page-margin)*4)] lg:mt-[calc(var(--page-margin)*3)] lg:mb-0 opacity-0"
+        >
+          <UiButton to="/approach" label="Explore the Method" mode="light" />
         </div>
       </div>
     </div>
   </section>
 </template>
-
-<style scoped>
-.mask-gradient {
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 10%,
-    black 90%,
-    transparent
-  );
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 10%,
-    black 90%,
-    transparent
-  );
-}
-</style>
