@@ -40,16 +40,31 @@ onUnmounted(() => {
     class="w-full bg-theme-dark text-theme-light pt-page-margin pb-section-gap px-page-margin overflow-hidden"
   >
     <div
-      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-8 lg:mb-12 items-baseline"
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-10 lg:mb-12 items-baseline"
     >
-      <div class="col-span-4 md:col-span-8 lg:col-span-12">
+      <div class="col-span-2 md:col-span-4 lg:col-span-6">
         <RevealText
           tag="h2"
           class="text-body font-normal text-theme-light"
           :duration="0.8"
         >
-          Our Trusted Partners · 18 — 26
+          Our Trusted Partners
         </RevealText>
+      </div>
+
+      <div
+        class="col-span-2 md:col-span-4 lg:col-span-6 text-right md:text-right"
+      >
+        <div class="opacity-40 inline-block">
+          <RevealText
+            tag="span"
+            class="text-body font-normal text-theme-light block"
+            :duration="0.8"
+            :delay="0.1"
+          >
+            (2018 — 2026)
+          </RevealText>
+        </div>
       </div>
     </div>
 
@@ -69,7 +84,7 @@ onUnmounted(() => {
             class="group flex items-center gap-x-3 opacity-50 hover:opacity-100 transition-opacity duration-300"
           >
             <svg
-              class="w-auto h-6 md:h-6 lg:h-7 fill-current text-theme-light"
+              class="w-auto h-7 md:h-7 lg:h-7 fill-current text-theme-light"
               viewBox="0 0 30 30"
               xmlns="http://www.w3.org/2000/svg"
             >
