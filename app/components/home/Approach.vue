@@ -84,7 +84,7 @@ onMounted(() => {
       >
         <RevealText
           tag="span"
-          class="text-body text-theme-light font-normal leading-[1.1]"
+          class="text-h6 text-theme-light font-normal leading-[1.1]"
         >
           / What Drives Us
         </RevealText>
@@ -95,7 +95,7 @@ onMounted(() => {
       >
         <RevealText
           tag="p"
-          class="text-body font-light leading-tight"
+          class="text-h6 font-light leading-tight"
           :delay="0.1"
           :duration="1"
         >
@@ -115,7 +115,7 @@ onMounted(() => {
       >
         <RevealText
           tag="span"
-          class="text-body text-theme-light font-normal leading-[1.1]"
+          class="text-h6 text-theme-light font-normal leading-[1.1]"
         >
           / Our Approach
         </RevealText>
@@ -126,7 +126,7 @@ onMounted(() => {
       >
         <RevealText
           tag="p"
-          class="text-body font-light leading-tight"
+          class="text-h6 font-light leading-tight"
           :delay="0.1"
           :duration="1"
         >
