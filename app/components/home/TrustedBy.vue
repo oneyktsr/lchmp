@@ -40,31 +40,16 @@ onUnmounted(() => {
     class="w-full bg-theme-dark text-theme-light pt-page-margin pb-section-gap px-page-margin overflow-hidden"
   >
     <div
-      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-6 lg:mb-10 items-baseline"
+      class="grid w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid-gutter mb-8 lg:mb-12 items-baseline"
     >
-      <div class="col-span-2 md:col-span-4 lg:col-span-6">
+      <div class="col-span-4 md:col-span-8 lg:col-span-12">
         <RevealText
           tag="h2"
-          class="text-small font-normal text-theme-light"
+          class="text-body font-normal text-theme-light"
           :duration="0.8"
         >
-          Trusted By
+          Our Trusted Partners · 18 — 26
         </RevealText>
-      </div>
-
-      <div
-        class="col-span-2 md:col-span-4 lg:col-span-6 text-right md:text-right"
-      >
-        <div class="opacity-40 inline-block">
-          <RevealText
-            tag="span"
-            class="text-small font-normal text-theme-light block"
-            :duration="0.8"
-            :delay="0.1"
-          >
-            (2018 — 2026)
-          </RevealText>
-        </div>
       </div>
     </div>
 

@@ -55,7 +55,7 @@ onMounted(() => {
       </div>
 
       <div
-        class="col-span-4 md:col-start-3 md:col-span-6 lg:col-start-4 lg:col-span-9 mt-[var(--page-margin)] lg:pt-3"
+        class="col-span-4 md:col-start-3 md:col-span-6 lg:col-start-4 lg:col-span-9 mt-[var(--page-margin)] lg:-translate-y-3"
       >
         <RevealText
           tag="p"
